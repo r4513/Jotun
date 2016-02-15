@@ -84,36 +84,16 @@ public class Sprite implements Serializable{
 	public final static Image player_down12 = new Image(Game.class.getResource("/sprites/player/player_down12.png").toString());	
 	
 	private Image image;
-    private double positionX;
-    private double positionY;    
-    private double velocityX;
-    private double velocityY;
     private double width;
     private double height;
-
-    public Sprite(Image image, int x, int y, int w, int h)
-    {
-        positionX = x;
-        positionY = y;    
-        velocityX = w;
-        velocityY = h;
-        this.image = image;
-    }
     
     public Sprite()
     {
-        positionX = 0;
-        positionY = 0;    
-        velocityX = 0;
-        velocityY = 0;
+    	
     }
 
-    public Sprite(Image image, int w, int h) {
-    	positionX = 0;
-        positionY = 0;    
-        velocityX = w;
-        velocityY = h;
-        this.image = image;
+    public Sprite(Image image) {
+        setImage(image);
 	}
 
 	public void setImage(Image i)
@@ -129,66 +109,28 @@ public class Sprite implements Serializable{
         setImage(i);
     }
 
-    public void setPosition(double x, double y)
+    public Rectangle2D getBoundary(int thisX, int thisY)
     {
-        positionX = x;
-        positionY = y;
+        return new Rectangle2D(thisX,thisY,width,height);
     }
 
-    public void setVelocity(double x, double y)
+    public boolean intersects(int thisX, int thisY, int otherX, int otherY)
     {
-        velocityX = x;
-        velocityY = y;
+        return this.getBoundary(otherX,otherY).intersects( this.getBoundary(thisX,thisY) );
     }
-
-    public void addVelocity(double x, double y)
-    {
-        velocityX += x;
-        velocityY += y;
-    }
-
-    public void update(double time)
-    {
-        positionX += velocityX * time;
-        positionY += velocityY * time;
-    }
-
-    public void render(GraphicsContext gc)
-    {
-        gc.drawImage( image, positionX, positionY );
-    }
-
-    public Rectangle2D getBoundary()
-    {
-        return new Rectangle2D(positionX,positionY,width,height);
-    }
-
-    public boolean intersects(Sprite s)
-    {
-        return s.getBoundary().intersects( this.getBoundary() );
-    }
-    
-    public String toString()
-    {
-        return " Position: [" + positionX + "," + positionY + "]" 
-        + " Velocity: [" + velocityX + "," + velocityY + "]";
-    }
-/*
-	public void renderTileIsometric(GraphicsContext gc, int xIso, int yIso, int xOffset, int yOffset) {
-		gc.drawImage( image, xIso + xOffset, yIso + yOffset);
-		gc.fillText((int )positionX + "," + (int)positionY, (xIso + Tile.WIDTH / 3) + xOffset, (yIso + Tile.HEIGHT * 1.6) + yOffset);
-	}
-*/
 	public void render(GraphicsContext gc, double x, double y) {
 		gc.drawImage( image, x, y );
 	}
-
-/*
-	public void renderIsometric(GraphicsContext gc, int xIso, int yIso, int xOffset, int yOffset) {
-		gc.drawImage( image, xIso + xOffset, yIso + yOffset);
-	}
-*/
+	
 	public void render(GraphicsContext gc, double x, double y, double xoffset, double yoffset) {
 		gc.drawImage( image, x + xoffset, y + yoffset);
+	}
+	
+	public void renderTile(GraphicsContext gc, double x, double y, double xoffset, double yoffset) {
+		gc.drawImage( image, x * image.getWidth() + xoffset, y * image.getHeight() + yoffset);
+	}
+
+	public void renderTile(GraphicsContext gc, double x, double y) {
+		gc.drawImage( image, x * image.getWidth(), y * image.getHeight());
 	}
 }

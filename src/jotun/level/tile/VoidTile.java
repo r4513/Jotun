@@ -8,10 +8,9 @@ public class VoidTile extends Tile {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static final int HEIGHT = 32;
 	
 	public VoidTile(Sprite sprite) {
-		super(sprite);
+		super(sprite,-1,-1);
 		_isSolid = true;
 	}
 }

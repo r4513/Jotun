@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 import jotun.level.Level;
+import jotun.utils.Position;
 
 public abstract class Entity  implements Serializable{
 
@@ -11,30 +12,34 @@ public abstract class Entity  implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	protected double xPosition, yPosition;
-	protected boolean _removed = false;
-	protected Level _level;
-	protected final Random _random = new Random();
+	public Position position;
+	public boolean removed = false;
+	public Level level;
+	public final Random random = new Random();
+	
+	public Entity(int x, int y){
+		this.position = new Position(x,y);
+	}
 	
 	public abstract void update();
 	
 	public void init(Level level){
-		_level = level;
+		this.level = level;
 	}
 	
 	public double getX(){
-		return xPosition;
+		return this.position.getX();
 	}
 	
 	public double getY(){
-		return yPosition;
+		return this.position.getY();
 	}
 	
 	public void remove(){
-		_removed = true;
+		removed = true;
 	}
 	
 	public boolean isRemoved(){
-		return _removed;
+		return removed;
 	}
 }

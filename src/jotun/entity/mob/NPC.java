@@ -6,9 +6,10 @@ import java.io.Serializable;
 import jotun.entity.Entity;
 import jotun.graphics.Sprite;
 import jotun.level.tile.Tile;
+import jotun.utils.Position;
 
 public abstract class NPC extends Entity implements Serializable{
-
+	
 	/**
 	 * 
 	 */
@@ -16,12 +17,11 @@ public abstract class NPC extends Entity implements Serializable{
 
 	public static final int SIZE = 64;
 
-	protected Sprite _sprite;
-	protected boolean _moving = false;
-	protected int _animate = 0;
-	protected int _animateSpeed = 60;
-	protected Direction _direction;
-	protected double speed = 2;
+	protected Sprite sprite;
+	protected boolean moving = false;
+	protected int animate = 0;
+	protected int animateSpeed = 60;
+	protected Direction direction;
 
 	@Override
 	public abstract void update();
@@ -29,52 +29,39 @@ public abstract class NPC extends Entity implements Serializable{
 	protected enum Direction {
 		UP, DOWN, LEFT, RIGHT, IDLE;
 	}
-
+	
+	public NPC(int x, int y) {
+		super(x, y);
+		this.direction = Direction.IDLE;
+	}
+	
 	public void move(double xa, double ya) {
 		if (xa != 0 && ya != 0) {
 			move(xa, 0);
 			move(0, ya);
 			return;
-
+		}else if(xa != 0){
+			Position target = new Position(position.x + xa, position.y);
+			if(!collision(target.x, target.y)){
+				position.x += xa / 64;
+			}
+		}else{
+			Position target = new Position(position.x, position.y + ya);
+			if(!collision(target.x, target.y)){
+				position.y += ya / 64;
+			}
 		}
 
 		if (xa > 0) {
-			_direction = Direction.RIGHT;
+			direction = Direction.RIGHT;
 		} else if (xa < 0) {
-			_direction = Direction.LEFT;
+			direction = Direction.LEFT;
 		} else if (ya > 0) {
-			_direction = Direction.DOWN;
+			direction = Direction.DOWN;
 		} else if (ya < 0) {
-			_direction = Direction.UP;
+			direction = Direction.UP;
 		}else{
-			_direction = Direction.IDLE;
-		}
-
-		while (xa != 0) {
-			if (Math.abs(xa) > 1) {
-				if (!collision(absMove(xa), ya)) {
-					xPosition += absMove(xa) * speed;
-				}
-				xa -= absMove(xa) * speed;
-			} else {
-				if (!collision(absMove(xa), ya)) {
-					xPosition += xa * speed;
-				}
-				xa = 0;
-			}
-		}
-		while (ya != 0) {
-			if (Math.abs(ya) > 1) {
-				if (!collision(xa, absMove(ya)) && !collision(xa, absMove(ya))) {
-					yPosition += absMove(ya) * speed;
-				}
-				ya -= absMove(ya);
-			} else {
-				if (!collision(xa, absMove(ya))&& !collision(xa, absMove(ya))) {
-					yPosition += ya * speed;
-				}
-				ya = 0;
-			}
+			direction = Direction.IDLE;
 		}
 	}
 
@@ -89,32 +76,16 @@ public abstract class NPC extends Entity implements Serializable{
 	}
 
 	public boolean collision(double xa, double ya) {
-		boolean collition = false;
-		double xt, yt;
-		for (int c = 0; c < 4; c++) {
-			xt = ((xPosition + xa) - c % 2 * (Tile.WIDTH - 1)) / Tile.WIDTH;
-			yt = ((yPosition + ya) - c / 2 * (Tile.HEIGHT - 1) + (SIZE / 2))
-					/ Tile.HEIGHT;
-			int xi = (int) Math.ceil(xt);
-			int yi = (int) Math.ceil(yt);
-
-			if (c % 2 == 0) {
-				xi = (int) Math.floor(xt);
-			}
-
-			if (c / 2 == 0) {
-				yi = (int) Math.floor(yt);
-			}
-
-			if (_level.getTile(xi, yi).solid()) {
-				collition = true;
-			}
+		boolean collision = false;
+		
+		if(level.getTile((int) Math.round(position.x + xa),(int) Math.round(position.y + ya)).solid()){
+			collision = true;
 		}
-
-		return collition;
+		
+		return collision;
 	}
 	
 	public Sprite getSprite() {
-		return _sprite;
+		return sprite;
 	}
 }

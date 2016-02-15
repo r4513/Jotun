@@ -2,9 +2,6 @@ package jotun.graphics;
 
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
-
-
 public class AnimatedSprite implements Serializable{
 
 	/**

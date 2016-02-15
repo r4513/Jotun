@@ -16,13 +16,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import jotun.entity.mob.Player;
 import jotun.graphics.Game;
-import jotun.level.tile.Tile;
-import jotun.utils.Vector2I;
 
 public class Jotun extends Application implements Serializable {
 
@@ -110,15 +107,6 @@ public class Jotun extends Application implements Serializable {
                 }
             }
         });
-		
-		this.game.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
-			@Override
-			public void handle(MouseEvent event) {
-				
-			}
-			
-		});
 		
 		this.stage.setScene(this.scene);
 		this.stage.setWidth(width);

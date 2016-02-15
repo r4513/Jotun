@@ -18,16 +18,33 @@ public abstract class Level  implements Serializable{
 	/**
 	 * 
 	 */
+	
+	private Comparator<Node> _nodeSorter = new Comparator<Node>() {
+		@Override
+		public int compare(Node n1, Node n2) {
+			if (n2.getFCost() < n1.getFCost()) {
+				return 1;
+			}
+			if (n2.getFCost() > n1.getFCost()) {
+				return -1;
+			}
+			return 0;
+		}
+	};
+	
+	private int dayLength = 54000;
 	private static final long serialVersionUID = 1L;
 	private List<Player> _players = new ArrayList<Player>();
 	private List<Entity> _entities = new ArrayList<Entity>();
 	public int width, height;
 	protected Tile[][] tiles;
+	private int time;
 
 	public Level(int width, int height){
 		tiles = new Tile[width][height];
 		this.width = width;
 		this.height= height;
+		this.time = 0;
 	}
 	
 	public int getWidth(){
@@ -59,7 +76,7 @@ public abstract class Level  implements Serializable{
 
 	public Tile getTile(int x, int y) {
 		if (x < 0 || y < 0 || x >= width || y >= height) {
-			return new WaterTile(new Sprite(Sprite.water1,x,y,Tile.WIDTH, Tile.HEIGHT));
+			return new WaterTile(new Sprite(Sprite.water1),x,y);
 		}
 		return tiles[x][y];
 	}
@@ -109,19 +126,6 @@ public abstract class Level  implements Serializable{
 		}
 		return collition;
 	}
-	
-	private Comparator<Node> _nodeSorter = new Comparator<Node>() {
-		@Override
-		public int compare(Node n1, Node n2) {
-			if (n2.getFCost() < n1.getFCost()) {
-				return 1;
-			}
-			if (n2.getFCost() > n1.getFCost()) {
-				return -1;
-			}
-			return 0;
-		}
-	};
 	
 	public List<Node> findPath(Vector2I start, Vector2I goal) {
 		List<Node> openList = new ArrayList<Node>(); // Consider these tiles
@@ -182,8 +186,11 @@ public abstract class Level  implements Serializable{
 	}
 	
 	private void tickTime() {
-		// TODO Auto-generated method stub
-		
+		if(this.time < this.dayLength){
+			this.time++;
+		}else{
+			this.time = 0;
+		}
 	}
 
 	private void remove() {

@@ -8,10 +8,9 @@ public class SandTile extends Tile {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static final int HEIGHT = 32;
 
-	public SandTile(Sprite sprite) {
-		super(sprite);
+	public SandTile(Sprite sprite, int x, int y) {
+		super(sprite,x,y);
 	}
 
 }

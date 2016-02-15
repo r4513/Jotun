@@ -38,7 +38,7 @@ public class Game extends Canvas implements Serializable{
 		//setScaleX(_scale);
 		//setScaleY(_scale);
 		level = new TownLevel(100,100);
-		player = new Player(1 * Tile.WIDTH,1 * Tile.HEIGHT);
+		player = new Player(3,3);
 		level.addEntity(player);
 	}
 
@@ -55,46 +55,22 @@ public class Game extends Canvas implements Serializable{
 	public void render() {
 		GraphicsContext gc2d = getGraphicsContext2D();
 		clear(gc2d);
+		double xP = player.position.x;
+		double yP = player.position.y;
+		int xScroll = (int) Math.round(xP - (getWidth() / Tile.WIDTH) / 2);
+		int yScroll = (int) Math.round(yP - (getHeight() / Tile.HEIGHT) / 2);
 		
-		int viewportWidth = width;
-		int viewportHeight = height;
-		int offsetMaxX = this.level.getWidth() - viewportWidth;
-		int offsetMaxY = this.level.getHeight() - viewportHeight;
-		int offsetMinX = 0;
-		int offsetMinY = 0;
-		int camX = (int) Math.floor(this.player.getX()/ Tile.WIDTH - (viewportWidth/ Tile.WIDTH) / 2 ) ;
-		int camY = (int) Math.ceil(this.player.getY() / Tile.HEIGHT + (viewportHeight/ Tile.HEIGHT) / 2) ;
-		/*
-		if (camX > offsetMaxX){
-		    camX = offsetMaxX;
-		}
-		else if (camX < offsetMinX){
-		    camX = offsetMinX;
-		}
-		if (camY > offsetMaxY){
-		    camY = offsetMaxY;
-		}
-		else if (camY < offsetMinY){
-		    camY = offsetMinY;
-		}*/
-		for(int x = camX; x < camX + 30; x++){
-			for(int y = camY; y > camY - 30; y--){
-				Tile tile = this.level.getTile(Math.round(x), Math.round(y));
-				tile.getSprite().render(gc2d, x * Tile.WIDTH , y * Tile.HEIGHT);
-			}
-		}
-		/*
-		int xScroll = (int) Math.round(player.getX() - (getWidth())) / Tile.WIDTH;
-		int yScroll = (int) Math.round(player.getY() + (getHeight())) / Tile.HEIGHT;
-		//System.out.println("Scroll: " + xScroll + "," + yScroll);
 		// Draw tiles
-		for(int x = xScroll; x < xScroll+30; x++){
-			for(int y = yScroll; y > yScroll - 30; y--){
-				Tile tile = this.level.getTile(Math.round(x), Math.round(y));
-				tile.getSprite().render(gc2d, x * Tile.WIDTH , y * Tile.HEIGHT);
+		int x0 = xScroll;
+		int x1 = xScroll + (width + Tile.WIDTH) / Tile.WIDTH;
+		int y0 = yScroll;
+		int y1 = yScroll + (height + Tile.HEIGHT) / Tile.HEIGHT;
+		for (int y = y0; y < y1; y++) {
+			for (int x = x0; x < x1; x++) {
+				this.level.getTile(x, y).getSprite().renderTile(gc2d, x, y , -(xScroll * Tile.WIDTH), -(yScroll * Tile.HEIGHT + Tile.HEIGHT * 1.5));
 			}
-		}*/
-		this.player.getSprite().render(gc2d, player.getX(), player.getY());
+		}
+		this.player.getSprite().render(gc2d, player.position.x * Tile.WIDTH, player.position.y* Tile.HEIGHT, -(xScroll * Tile.WIDTH),  -(yScroll * Tile.HEIGHT + Tile.HEIGHT * 1.5));
 		
 		// Draw mouse
 		gc2d.setFill(Color.RED);
