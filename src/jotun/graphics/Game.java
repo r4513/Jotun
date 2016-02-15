@@ -21,7 +21,7 @@ public class Game extends Canvas implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private static int width;
 	private static int height;
-	//public static int _scale = 3; // The scale for scaling the screen by 3 to increase performance
+	//public static double scale = 1.25; // The scale for scaling the screen by 3 to increase performance
 
 	private Level level;
 	private Player player;
@@ -35,8 +35,8 @@ public class Game extends Canvas implements Serializable{
 		super(width, width / 16 * 9);
 		this.width = width;
 		height = width / 16 * 9;
-		//setScaleX(_scale);
-		//setScaleY(_scale);
+		//setScaleX(scale);
+		//setScaleY(scale);
 		level = new TownLevel(100,100);
 		player = new Player(3,3);
 		level.addEntity(player);
@@ -67,7 +67,7 @@ public class Game extends Canvas implements Serializable{
 		int y1 = yScroll + (height + Tile.HEIGHT) / Tile.HEIGHT;
 		for (int y = y0; y < y1; y++) {
 			for (int x = x0; x < x1; x++) {
-				this.level.getTile(x, y).getSprite().renderTile(gc2d, x, y , -(xScroll * Tile.WIDTH), -(yScroll * Tile.HEIGHT + Tile.HEIGHT * 1.5));
+				this.level.getTile(x, y).getSprite().renderTile(gc2d, x, y, -(xScroll * Tile.WIDTH), -(yScroll * Tile.HEIGHT + Tile.HEIGHT * 1.5));
 			}
 		}
 		this.player.getSprite().render(gc2d, player.position.x * Tile.WIDTH, player.position.y* Tile.HEIGHT, -(xScroll * Tile.WIDTH),  -(yScroll * Tile.HEIGHT + Tile.HEIGHT * 1.5));

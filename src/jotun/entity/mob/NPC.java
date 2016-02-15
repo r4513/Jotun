@@ -43,12 +43,12 @@ public abstract class NPC extends Entity implements Serializable{
 		}else if(xa != 0){
 			Position target = new Position(position.x + xa, position.y);
 			if(!collision(target.x, target.y)){
-				position.x += xa / 64;
+				position.x += xa / 32;
 			}
 		}else{
 			Position target = new Position(position.x, position.y + ya);
 			if(!collision(target.x, target.y)){
-				position.y += ya / 64;
+				position.y += ya / 32;
 			}
 		}
 
