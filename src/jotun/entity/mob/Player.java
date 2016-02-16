@@ -22,10 +22,13 @@ public class Player extends NPC implements Serializable{
 	private Position targetPosition;
 
 	public Player(int x, int y) {
-		super(x,y);
+		super(x,y, new Sprite(Sprite.player_idle1));
 		setTargetPosition(new Position(x,y));
-		setSprite(new Sprite(Sprite.player_idle1));
 		initAnimations();
+		getSprite().setX(16);
+		getSprite().setY(16);
+		getSprite().setWidth(32);
+		getSprite().setHeight(32);
 	}
 
 	private void initAnimations() {

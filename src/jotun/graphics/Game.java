@@ -45,6 +45,7 @@ public class Game extends Canvas implements Serializable{
 	 */
 	public void update() {
 		level.update();
+		System.out.println("Player: " + player.getX() + "," + player.getY());
 	}
 
 	/**
@@ -70,7 +71,7 @@ public class Game extends Canvas implements Serializable{
 				this.level.getTile(x, y).getSprite().renderTile(gc, x, y, xOffset, yOffset);
 			}
 		}
-		this.player.getSprite().render(gc, player.getX() * Tile.WIDTH, player.getY() * Tile.HEIGHT, xOffset,  yOffset);
+		this.player.getSprite().render(gc, player.getX(), player.getY(), xOffset,  yOffset);
 		
 		// Draw mouse
 		gc.setFill(Color.RED);

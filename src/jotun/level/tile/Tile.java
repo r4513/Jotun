@@ -33,6 +33,7 @@ public abstract class Tile implements Serializable{
 
 	public Tile(Sprite sprite, int x, int y) {
 		this.sprite = sprite;
+		this.sprite.init(x, y);
 		this.position = new Position(x,y);
 	}
 	

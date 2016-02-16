@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import jotun.level.tile.Tile;
 
 public class Sprite implements Serializable{
 	/**
@@ -85,6 +86,8 @@ public class Sprite implements Serializable{
 	private Image image;
     private double width;
     private double height;
+	private int x;
+	private int y;
 
     public Sprite(Image image) {
         setImage(image);
@@ -93,8 +96,8 @@ public class Sprite implements Serializable{
 	public void setImage(Image i)
     {
         image = i;
-        width = i.getWidth();
-        height = i.getHeight();
+        setWidth(i.getWidth());
+        setHeight(i.getHeight());
     }
 
     public void setImage(String filename)
@@ -103,28 +106,67 @@ public class Sprite implements Serializable{
         setImage(i);
     }
 
-    public Rectangle2D getBoundary(int thisX, int thisY)
+    public Rectangle2D getBoundary()
     {
-        return new Rectangle2D(thisX,thisY,width,height);
+        return new Rectangle2D(getX(),getY(),getWidth(),getHeight());
     }
 
-    public boolean intersects(int thisX, int thisY, int otherX, int otherY)
+    public boolean intersects(Sprite sprite)
     {
-        return this.getBoundary(otherX,otherY).intersects( this.getBoundary(thisX,thisY) );
+        return sprite.getBoundary().intersects( this.getBoundary() );
     }
 	public void render(GraphicsContext gc, double x, double y) {
-		gc.drawImage( image, x, y );
+		gc.drawImage( image, x* Tile.WIDTH, y * Tile.HEIGHT);
 	}
 	
 	public void render(GraphicsContext gc, double x, double y, double xoffset, double yoffset) {
-		gc.drawImage( image, x + xoffset, y + yoffset);
+		gc.drawImage( image, x* Tile.WIDTH + xoffset - image.getWidth() / 2, y* Tile.HEIGHT + yoffset - image.getHeight());
 	}
 	
 	public void renderTile(GraphicsContext gc, double x, double y, double xoffset, double yoffset) {
 		gc.drawImage( image, x * image.getWidth() + xoffset, y * image.getHeight() + yoffset);
+		gc.fillText((int)x + "," + (int)y, x * Tile.WIDTH+ xoffset, y * Tile.HEIGHT+ yoffset);
 	}
 
 	public void renderTile(GraphicsContext gc, double x, double y) {
 		gc.drawImage( image, x * image.getWidth(), y * image.getHeight());
+		gc.fillText((int)x + "," + (int)y, x * image.getWidth(), y * image.getHeight());
+	}
+
+	public void init(int x, int y) {
+		this.setX(x);
+		this.setY(y);
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public double getWidth() {
+		return width;
+	}
+
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	public double getHeight() {
+		return height;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
 	}
 }

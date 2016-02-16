@@ -11,7 +11,7 @@ public class WallDarkTile extends Tile{
 
 	public WallDarkTile(Sprite sprite, int x, int y) {
 		super(sprite, x, y);
-		setLiquid(true);
+		setSolid(true);
 	}
 
 }

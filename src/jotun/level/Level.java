@@ -63,12 +63,10 @@ public abstract class Level  implements Serializable{
 			String line = "";
 			while(scanner.hasNextLine()){
 			   line = scanner.nextLine();
-			   System.out.println(line.length());
 			   for(int i = 0; i < line.length(); i++){
 				   x = i;
 				   char current = line.charAt(i);
 				   int value = Character.getNumericValue(current);
-				   System.out.println(x + "," + y + "," + value);
 				   this.tiles[x][y] = Tile.createTile(value, x, y);
 			   }
 			   y++;

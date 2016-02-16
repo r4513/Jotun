@@ -11,6 +11,7 @@ public class WaterTile extends Tile {
 	
 	public WaterTile(Sprite sprite, int x, int y) {
 		super(sprite,x,y);
+		setSolid(true);
 		setLiquid(true);
 	}
 }

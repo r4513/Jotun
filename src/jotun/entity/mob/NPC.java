@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import jotun.entity.Entity;
 import jotun.graphics.Sprite;
+import jotun.level.tile.Tile;
 import jotun.utils.Position;
 
 public abstract class NPC extends Entity implements Serializable{
@@ -29,9 +30,11 @@ public abstract class NPC extends Entity implements Serializable{
 		UP, DOWN, LEFT, RIGHT, IDLE;
 	}
 	
-	public NPC(int x, int y) {
+	public NPC(int x, int y, Sprite sprite) {
 		super(x, y);
 		this.direction = Direction.IDLE;
+		this.sprite = sprite;
+		this.sprite.init(x,y);
 	}
 	
 	public void move(double xa, double ya) {
@@ -40,14 +43,12 @@ public abstract class NPC extends Entity implements Serializable{
 			move(0, ya);
 			return;
 		}else if(xa != 0){
-			Position target = new Position(getX() + xa, getY());
-			if(!collision(target.x, target.y)){
-				addX(xa / 32);
+			if(!collisionTile(getX() + xa, getY() + ya)){
+				addX(xa / 16);
 			}
 		}else{
-			Position target = new Position(getX(), getY() + ya);
-			if(!collision(target.x, target.y)){
-				addY(ya / 32);
+			if(!collisionTile(getX() + xa, getY() + ya)){
+				addY(ya / 16);
 			}
 		}
 
@@ -63,13 +64,39 @@ public abstract class NPC extends Entity implements Serializable{
 			direction = Direction.IDLE;
 		}
 	}
+	
+	public boolean collisionTile(double xa, double ya){
+		Tile target = this.getLevel().getTile((int)Math.round(xa),(int) Math.round(ya));
+		if(target.getSprite().intersects(getSprite()) && target.isSolid()){
+			System.out.println("Blocked: " + target.getPosition().getX() + "," + target.getPosition().getY());
+			return true;
+		}
+		return false;
+	}
 
 	public boolean collision(double xa, double ya) {
-		boolean collision = false;
-		if(getLevel().getTile((int) Math.round(getX() + xa),(int) Math.round(getY() + ya)).isSolid()){
-			collision = true;
+		boolean collition = false;
+		double xt, yt;
+		for (int c = 0; c < 4; c++) {
+			xt = ((getX() + xa) - c % 2 * (Tile.WIDTH - 1)) / Tile.WIDTH;
+			yt = ((getY() + ya) - c / 2 * (Tile.HEIGHT - 1) + (SIZE / 2)) / Tile.HEIGHT;
+			int xi = (int) Math.ceil(xt);
+			int yi = (int) Math.ceil(yt);
+
+			if (c % 2 == 0) {
+				xi = (int) Math.floor(xt);
+			}
+
+			if (c / 2 == 0) {
+				yi = (int) Math.floor(yt);
+			}
+
+			if (getLevel().getTile(xi, yi).isSolid()) {
+				collition = true;
+			}
 		}
-		return collision;
+
+		return collition;
 	}
 	
 	public Sprite getSprite() {
