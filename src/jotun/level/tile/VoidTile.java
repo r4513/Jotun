@@ -11,6 +11,6 @@ public class VoidTile extends Tile {
 	
 	public VoidTile(Sprite sprite) {
 		super(sprite,-1,-1);
-		_isSolid = true;
+		setSolid(true);
 	}
 }

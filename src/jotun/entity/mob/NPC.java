@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 import jotun.entity.Entity;
 import jotun.graphics.Sprite;
-import jotun.level.tile.Tile;
 import jotun.utils.Position;
 
 public abstract class NPC extends Entity implements Serializable{
@@ -67,7 +66,7 @@ public abstract class NPC extends Entity implements Serializable{
 
 	public boolean collision(double xa, double ya) {
 		boolean collision = false;
-		if(getLevel().getTile((int) Math.round(getX() + xa),(int) Math.round(getY() + ya)).solid()){
+		if(getLevel().getTile((int) Math.round(getX() + xa),(int) Math.round(getY() + ya)).isSolid()){
 			collision = true;
 		}
 		return collision;

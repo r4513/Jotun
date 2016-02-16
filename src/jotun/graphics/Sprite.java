@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import jotun.level.tile.Tile;
 
 public class Sprite implements Serializable{
 	/**

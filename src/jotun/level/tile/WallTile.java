@@ -11,7 +11,7 @@ public class WallTile extends Tile {
 
 	public WallTile(Sprite sprite, int x, int y) {
 		super(sprite,x,y);
-		_isSolid = true;
+		setSolid(true);
 	}
 
 }

@@ -1,10 +1,13 @@
 package jotun.level;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 
 import jotun.entity.Entity;
 import jotun.entity.mob.Player;
@@ -29,6 +32,7 @@ public abstract class Level  implements Serializable{
 	};
 	
 	private static final long serialVersionUID = 1L;
+	
 	private List<Player> _players = new ArrayList<Player>();
 	private List<Entity> _entities = new ArrayList<Entity>();
 	private int width, height;
@@ -43,6 +47,31 @@ public abstract class Level  implements Serializable{
 		this.time = 0;
 	}
 	
+	public abstract void generateLevel();
+	
+	public void loadLevelFromFile(String filename){
+		Scanner scanner = null;
+		try {
+			scanner = new Scanner(new File(filename));
+		} catch (FileNotFoundException e) {
+			System.out.println("Town level map doesn't exist.");
+			e.printStackTrace();
+		}
+		int x = 0;
+		int y = 0;
+		String line = "";
+		while(scanner.hasNextLine()){
+		   line = scanner.nextLine();
+		   for(int i = 0; i < line.length(); i++){
+			   y = i;
+			   char current = line.charAt(i);
+			   int value = Character.getNumericValue(current);
+			   this.tiles[x][y] = Tile.createTile(value, x, y);
+		   }
+		   x++;
+		}
+	}
+	
 	public int getWidth(){
 		return width;
 	}
@@ -54,8 +83,6 @@ public abstract class Level  implements Serializable{
 	public int getHeight(){
 		return height;
 	}
-	
-	public abstract void generateLevel();
 	
 	public void addEntity(Entity e) {
 		e.init(this);
@@ -120,7 +147,7 @@ public abstract class Level  implements Serializable{
 		for (int c = 0; c < 4; c++) {
 			xt = (x - c % 2 * size + xOffset) / Tile.WIDTH;
 			yt = (y - c / 2 * size + yOffset) / Tile.HEIGHT;
-			if (getTile(xt, yt).solid()) {
+			if (getTile(xt, yt).isSolid()) {
 				collition = true;
 			}
 		}
@@ -162,7 +189,7 @@ public abstract class Level  implements Serializable{
 				if (tile == null) {
 					continue;
 				}
-				if (tile.solid()) {
+				if (tile.isSolid()) {
 					continue;
 				}
 
