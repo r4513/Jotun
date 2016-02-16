@@ -17,11 +17,11 @@ public abstract class NPC extends Entity implements Serializable{
 
 	public static final int SIZE = 64;
 
-	protected Sprite sprite;
-	protected boolean moving = false;
-	protected int animate = 0;
-	protected int animateSpeed = 60;
-	protected Direction direction;
+	private Sprite sprite;
+	private boolean moving = false;
+	private int animate = 0;
+	private int animateSpeed = 60;
+	private Direction direction;
 
 	@Override
 	public abstract void update();
@@ -41,14 +41,14 @@ public abstract class NPC extends Entity implements Serializable{
 			move(0, ya);
 			return;
 		}else if(xa != 0){
-			Position target = new Position(position.x + xa, position.y);
+			Position target = new Position(getX() + xa, getY());
 			if(!collision(target.x, target.y)){
-				position.x += xa / 32;
+				addX(xa / 32);
 			}
 		}else{
-			Position target = new Position(position.x, position.y + ya);
+			Position target = new Position(getX(), getY() + ya);
 			if(!collision(target.x, target.y)){
-				position.y += ya / 32;
+				addY(ya / 32);
 			}
 		}
 
@@ -65,27 +65,47 @@ public abstract class NPC extends Entity implements Serializable{
 		}
 	}
 
-	private int absMove(double ya) {
-		if (ya < 0) {
-			return -1;
-		}
-		if (ya == 0) {
-			return 0;
-		}
-		return 1;
-	}
-
 	public boolean collision(double xa, double ya) {
 		boolean collision = false;
-		
-		if(level.getTile((int) Math.round(position.x + xa),(int) Math.round(position.y + ya)).solid()){
+		if(getLevel().getTile((int) Math.round(getX() + xa),(int) Math.round(getY() + ya)).solid()){
 			collision = true;
 		}
-		
 		return collision;
 	}
 	
 	public Sprite getSprite() {
 		return sprite;
+	}
+	
+	public void setSprite(Sprite sprite){
+		this.sprite = sprite;
+	}
+	
+	public Direction getDirection(){
+		return this.direction;
+	}
+
+	public boolean isMoving() {
+		return moving;
+	}
+
+	public void setMoving(boolean moving) {
+		this.moving = moving;
+	}
+
+	public int getAnimate() {
+		return animate;
+	}
+
+	public void setAnimate(int animate) {
+		this.animate = animate;
+	}
+
+	public int getAnimateSpeed() {
+		return animateSpeed;
+	}
+
+	public void setAnimateSpeed(int animateSpeed) {
+		this.animateSpeed = animateSpeed;
 	}
 }

@@ -18,13 +18,13 @@ public class Player extends NPC implements Serializable{
 	private AnimatedSprite up = new AnimatedSprite(12);
 	private AnimatedSprite right = new AnimatedSprite(12);
 	private AnimatedSprite left = new AnimatedSprite(12);
-	private AnimatedSprite _currentAnimatedSprite = right;
-	public Position targetPosition;
+	private AnimatedSprite currentAnimatedSprite = right;
+	private Position targetPosition;
 
 	public Player(int x, int y) {
 		super(x,y);
-		targetPosition = new Position(x,y);
-		sprite = new Sprite(Sprite.player_idle1);
+		setTargetPosition(new Position(x,y));
+		setSprite(new Sprite(Sprite.player_idle1));
 		initAnimations();
 	}
 
@@ -99,32 +99,40 @@ public class Player extends NPC implements Serializable{
 	}
 
 	private void updateMoving() {
-		if (animate < animateSpeed) {
-			animate++;
+		if (getAnimate() < getAnimateSpeed()) {
+			setAnimate(getAnimate() + 1);
 		} else {
-			animate = 0;
+			setAnimate(0);
 		}
 		
-		if(animate % 5 == 0){
-			_currentAnimatedSprite.update();
+		if(getAnimate() % 5 == 0){
+			currentAnimatedSprite.update();
 		}
 
-		if (this.direction == Direction.UP) {
-			_currentAnimatedSprite = up;
-		} else if (this.direction == Direction.DOWN) {
-			_currentAnimatedSprite = down;
-		} else if (this.direction == Direction.LEFT) {
-			_currentAnimatedSprite = left;
-		} else if (this.direction == Direction.RIGHT) {
-			_currentAnimatedSprite = right;
+		if (getDirection() == Direction.UP) {
+			currentAnimatedSprite = up;
+		} else if (getDirection() == Direction.DOWN) {
+			currentAnimatedSprite = down;
+		} else if (getDirection() == Direction.LEFT) {
+			currentAnimatedSprite = left;
+		} else if (getDirection() == Direction.RIGHT) {
+			currentAnimatedSprite = right;
 		}else{
-			_currentAnimatedSprite = idle;
+			currentAnimatedSprite = idle;
 		}
 		
-		sprite = _currentAnimatedSprite.getFrame();
+		setSprite(currentAnimatedSprite.getFrame());
 	}
 
 	private void updateShooting() {
 		
+	}
+
+	public Position getTargetPosition() {
+		return targetPosition;
+	}
+
+	public void setTargetPosition(Position targetPosition) {
+		this.targetPosition = targetPosition;
 	}
 }

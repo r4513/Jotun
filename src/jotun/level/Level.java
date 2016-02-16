@@ -15,10 +15,6 @@ import jotun.utils.Vector2I;
 
 public abstract class Level  implements Serializable{
 
-	/**
-	 * 
-	 */
-	
 	private Comparator<Node> _nodeSorter = new Comparator<Node>() {
 		@Override
 		public int compare(Node n1, Node n2) {
@@ -32,13 +28,13 @@ public abstract class Level  implements Serializable{
 		}
 	};
 	
-	private int dayLength = 54000;
 	private static final long serialVersionUID = 1L;
 	private List<Player> _players = new ArrayList<Player>();
 	private List<Entity> _entities = new ArrayList<Entity>();
-	public int width, height;
+	private int width, height;
 	protected Tile[][] tiles;
 	private int time;
+	private int dayLength = 54000;
 
 	public Level(int width, int height){
 		tiles = new Tile[width][height];

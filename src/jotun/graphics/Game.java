@@ -18,14 +18,12 @@ import jotun.level.tile.Tile;
  */
 public class Game extends Canvas implements Serializable{
 
-	private static final long serialVersionUID = 1L;
-	private static int width;
-	private static int height;
 	//public static double scale = 1.25; // The scale for scaling the screen by 3 to increase performance
-
-	private Level level;
+	private static final long serialVersionUID = 1L;
+	private int width;
+	private int height;private Level level;
 	private Player player;
-
+	
 	/**
 	 * Game constructor
 	 * 
@@ -53,12 +51,14 @@ public class Game extends Canvas implements Serializable{
 	 * Renders to the buffers
 	 */
 	public void render() {
-		GraphicsContext gc2d = getGraphicsContext2D();
-		clear(gc2d);
-		double xP = player.position.x;
-		double yP = player.position.y;
+		GraphicsContext gc = getGraphicsContext2D();
+		clear(gc);
+		double xP = player.getX();
+		double yP = player.getY();
 		int xScroll = (int) Math.round(xP - (getWidth() / Tile.WIDTH) / 2);
 		int yScroll = (int) Math.round(yP - (getHeight() / Tile.HEIGHT) / 2);
+		double xOffset = -(xScroll * Tile.WIDTH);
+		double yOffset = -(yScroll * Tile.HEIGHT + Tile.HEIGHT * 1.5);
 		
 		// Draw tiles
 		int x0 = xScroll;
@@ -67,28 +67,24 @@ public class Game extends Canvas implements Serializable{
 		int y1 = yScroll + (height + Tile.HEIGHT) / Tile.HEIGHT;
 		for (int y = y0; y < y1; y++) {
 			for (int x = x0; x < x1; x++) {
-				this.level.getTile(x, y).getSprite().renderTile(gc2d, x, y, -(xScroll * Tile.WIDTH), -(yScroll * Tile.HEIGHT + Tile.HEIGHT * 1.5));
+				this.level.getTile(x, y).getSprite().renderTile(gc, x, y, xOffset, yOffset);
 			}
 		}
-		this.player.getSprite().render(gc2d, player.position.x * Tile.WIDTH, player.position.y* Tile.HEIGHT, -(xScroll * Tile.WIDTH),  -(yScroll * Tile.HEIGHT + Tile.HEIGHT * 1.5));
+		this.player.getSprite().render(gc, player.getX() * Tile.WIDTH, player.getY() * Tile.HEIGHT, xOffset,  yOffset);
 		
 		// Draw mouse
-		gc2d.setFill(Color.RED);
-	}
-	
-	public void setToIsometricX(int isoX, int cartX, int cartY){
-		isoX = cartX - cartY;
-	}
-	
-	public void setToIsometricY(int isoY, int cartX, int cartY){
-		isoY = (cartX + cartY) / 2;
+		gc.setFill(Color.RED);
 	}
 
-	private void clear(GraphicsContext gc2d) {
-		gc2d.clearRect(0, 0, width, height);
+	private void clear(GraphicsContext gc) {
+		gc.clearRect(0, 0, width, height);
 	}
 
 	public Player getPlayer() {
 		return this.player;
+	}
+	
+	public Level getLevel(){
+		return this.level;
 	}
 }

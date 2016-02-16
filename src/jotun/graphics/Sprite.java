@@ -86,11 +86,6 @@ public class Sprite implements Serializable{
 	private Image image;
     private double width;
     private double height;
-    
-    public Sprite()
-    {
-    	
-    }
 
     public Sprite(Image image) {
         setImage(image);

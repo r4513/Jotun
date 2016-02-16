@@ -9,7 +9,7 @@ public class AnimatedSprite implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	public Sprite[] frames;
-    public double duration;
+    private double duration;
 	private int counter = 0;
     
     public AnimatedSprite(int length){
