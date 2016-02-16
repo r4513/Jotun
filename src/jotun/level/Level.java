@@ -1,6 +1,7 @@
 package jotun.level;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Scanner;
 
 import jotun.entity.Entity;
 import jotun.entity.mob.Player;
+import jotun.graphics.Game;
 import jotun.graphics.Sprite;
 import jotun.level.tile.Tile;
 import jotun.level.tile.WaterTile;
@@ -51,24 +53,28 @@ public abstract class Level  implements Serializable{
 	
 	public void loadLevelFromFile(String filename){
 		Scanner scanner = null;
+		File file = new File(filename);
+		FileInputStream fileStream = null;
 		try {
-			scanner = new Scanner(new File(filename));
+			fileStream = new FileInputStream(file);
+			scanner = new Scanner(fileStream);
+			int x = 0;
+			int y = 0;
+			String line = "";
+			while(scanner.hasNextLine()){
+			   line = scanner.nextLine();
+			   for(int i = 0; i < line.length(); i++){
+				   y = i;
+				   char current = line.charAt(i);
+				   int value = Character.getNumericValue(current);
+				   this.tiles[x][y] = Tile.createTile(value, x, y);
+			   }
+			   x++;
+			}
+			scanner.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("Town level map doesn't exist.");
+			System.out.println("Level map doesn't exist.");
 			e.printStackTrace();
-		}
-		int x = 0;
-		int y = 0;
-		String line = "";
-		while(scanner.hasNextLine()){
-		   line = scanner.nextLine();
-		   for(int i = 0; i < line.length(); i++){
-			   y = i;
-			   char current = line.charAt(i);
-			   int value = Character.getNumericValue(current);
-			   this.tiles[x][y] = Tile.createTile(value, x, y);
-		   }
-		   x++;
 		}
 	}
 	

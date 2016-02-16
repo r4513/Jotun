@@ -8,6 +8,9 @@ public class TownLevel extends Level{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	public static int WIDTH = 60;
+	public static int HEIGHT = 30;
 
 	public TownLevel(int w, int h){
 		super(w,h);
@@ -16,6 +19,6 @@ public class TownLevel extends Level{
 
 	@Override
 	public void generateLevel() {
-		loadLevelFromFile("TownLevel.map");
+		loadLevelFromFile(TownLevel.class.getResource("/maps/TownLevel.map").toString());
 	}
 }

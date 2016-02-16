@@ -45,7 +45,7 @@ public abstract class Tile implements Serializable{
 		case SANDTILE : return new SandTile(new Sprite(Sprite.sand), x, y);
 		case WALLTILE : return new WallTile(new Sprite(Sprite.wall_red), x, y);
 		case WALLDARKTILE : return new WallDarkTile(new Sprite(Sprite.wall_dark), x, y);
-		case WATERTILE : return new WaterTile(new Sprite(Sprite.water1), x, y);
+		case WATERTILE : return new WaterTile(new Sprite(Sprite.water3), x, y);
 		}
 		return null;
 	}
