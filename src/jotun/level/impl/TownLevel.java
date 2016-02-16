@@ -19,6 +19,6 @@ public class TownLevel extends Level{
 
 	@Override
 	public void generateLevel() {
-		loadLevelFromFile(TownLevel.class.getResource("/maps/TownLevel.map").toString());
+		loadLevelFromFile("res\\maps\\TownLevel.map");
 	}
 }

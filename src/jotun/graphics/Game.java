@@ -36,7 +36,7 @@ public class Game extends Canvas implements Serializable{
 		//setScaleX(scale);
 		//setScaleY(scale);
 		level = new TownLevel(TownLevel.WIDTH, TownLevel.HEIGHT);
-		player = new Player(3,3);
+		player = new Player(32,16);
 		level.addEntity(player);
 	}
 
