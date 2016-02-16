@@ -22,9 +22,9 @@ public class TownLevel extends Level{
 		for(int x = 0; x < getWidth(); x++){
 			for(int y = 0; y < getHeight(); y++){
 				if(x == 0 || x == getWidth() || y == 0 || y == getHeight()){
-					tiles[x][y] = new WallTile(new Sprite(Sprite.wall_dark),x,y);
+					getTiles()[x][y] = new WallTile(new Sprite(Sprite.wall_dark),x,y);
 				}else{
-					tiles[x][y] = new GrassTile(new Sprite(Sprite.grass),x,y);
+					getTiles()[x][y] = new GrassTile(new Sprite(Sprite.grass),x,y);
 				}
 			}
 		}

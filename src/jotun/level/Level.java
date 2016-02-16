@@ -32,7 +32,7 @@ public abstract class Level  implements Serializable{
 	private List<Player> _players = new ArrayList<Player>();
 	private List<Entity> _entities = new ArrayList<Entity>();
 	private int width, height;
-	protected Tile[][] tiles;
+	private Tile[][] tiles;
 	private int time;
 	private int dayLength = 54000;
 
@@ -45,6 +45,10 @@ public abstract class Level  implements Serializable{
 	
 	public int getWidth(){
 		return width;
+	}
+	
+	public Tile[][] getTiles(){
+		return this.tiles;
 	}
 	
 	public int getHeight(){
